@@ -26,10 +26,10 @@ resource "null_resource" "ssl-check" {
 #Module      : Cloudtrail Logs
 #Description : This terraform module is designed to create site-monitoring.
 module "site-monitor-rule" {
-  source = "git::https://github.com/clouddrove/terraform-aws-cloudwatch-event-rule.git?ref=tags/0.12.1"
+  source = "git::https://github.com/clouddrove/terraform-aws-cloudwatch-event-rule.git?ref=0.14"
 
   name        = "site-monitor"
-  application = var.application
+  repository  = var.repository
   environment = var.environment
   label_order = var.label_order
   managedby   = var.managedby
@@ -38,15 +38,15 @@ module "site-monitor-rule" {
   description         = "Event Rule for site monitor."
   schedule_expression = var.schedule_expression
 
-  target_id = format("%s-%s-%s", var.environment, var.application, var.name)
-  arn       = format("arn:aws:lambda:%s:%s:function:%s-%s-%s", data.aws_region.current.name, data.aws_caller_identity.current.account_id, var.environment, var.application, var.name)
+  target_id = format("%s-%s-%s", var.environment, var.name)
+  arn       = format("arn:aws:lambda:%s:%s:function:%s-%s-%s", data.aws_region.current.name, data.aws_caller_identity.current.account_id, var.environment, var.name)
 }
 
 module "site-monitor" {
-  source = "git::https://github.com/clouddrove/terraform-aws-lambda.git?ref=tags/0.12.5"
+  source = "git::https://github.com/clouddrove/terraform-aws-lambda.git?ref=0.14"
 
   name        = var.name
-  application = var.application
+  repository  = var.repository
   environment = var.environment
   managedby   = var.managedby
   label_order = var.label_order
@@ -91,10 +91,10 @@ module "site-monitor" {
 }
 
 module "lambda" {
-  source = "git::https://github.com/clouddrove/terraform-aws-lambda.git?ref=tags/0.12.5"
+  source = "git::https://github.com/clouddrove/terraform-aws-lambda.git?ref=0.14"
 
   name        = "monitor-lambda"
-  application = var.application
+  repository  = var.repository
   environment = var.environment
   label_order = var.label_order
   enabled     = var.enabled && var.monitor_enabled
@@ -135,10 +135,10 @@ module "lambda" {
 #Module      : SNS
 #Description : Provides an SNS topic resource
 module "sns" {
-  source = "git::https://github.com/clouddrove/terraform-aws-sns.git?ref=tags/0.12.2"
+  source = "git::https://github.com/clouddrove/terraform-aws-sns.git?ref=0.14"
 
   name         = "monitor-sns"
-  application  = var.application
+  repository   = var.repository
   environment  = var.environment
   label_order  = var.label_order
   managedby    = var.managedby
@@ -153,10 +153,10 @@ module "sns" {
 #Module      : Cloudtrail Logs
 #Description : This terraform module is designed to create site ssl check.
 module "ssl-check-rule" {
-  source = "git::https://github.com/clouddrove/terraform-aws-cloudwatch-event-rule.git?ref=tags/0.12.1"
+  source = "git::https://github.com/clouddrove/terraform-aws-cloudwatch-event-rule.git?ref=0.14"
 
   name        = "ssl-check"
-  application = var.application
+  repository  = var.repository
   environment = var.environment
   label_order = var.label_order
   managedby   = var.managedby
@@ -165,15 +165,15 @@ module "ssl-check-rule" {
   description         = "Event Rule for site ssl check."
   schedule_expression = var.ssl_schedule_expression
 
-  target_id = format("%s-%s-%s", var.environment, var.application, var.name)
-  arn       = format("arn:aws:lambda:%s:%s:function:%s-%s-%s", data.aws_region.current.name, data.aws_caller_identity.current.account_id, var.environment, var.application, var.name)
+  target_id = format("%s-%s-%s", var.environment, var.name)
+  arn       = format("arn:aws:lambda:%s:%s:function:%s-%s-%s", data.aws_region.current.name, data.aws_caller_identity.current.account_id, var.environment, var.name)
 }
 
 module "ssl-check" {
-  source = "git::https://github.com/clouddrove/terraform-aws-lambda.git?ref=tags/0.12.5"
+  source = "git::https://github.com/clouddrove/terraform-aws-lambda.git?ref=0.14"
 
   name        = "ssl-check"
-  application = var.application
+  repository  = var.repository
   environment = var.environment
   managedby   = var.managedby
   label_order = var.label_order

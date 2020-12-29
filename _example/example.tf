@@ -6,9 +6,9 @@ module "site-monitor" {
   source = "./../"
 
   name                = "site-monitor"
-  application         = "clouddrove"
+  repository          = "https://github.com/clouddrove/terraform-aws-site-monitor.git"
   environment         = "test"
-  label_order         = ["environment", "application", "name"]
+  label_order         = ["name", "environment"]
   enabled             = true
   monitor_enabled     = true
   ssl_check_enabled   = true
@@ -29,12 +29,12 @@ module "site-monitor" {
 }
 
 module "alarm" {
-  source = "git::https://github.com/clouddrove/terraform-aws-cloudwatch-alarms.git?ref=tags/0.12.3"
+  source = "git::https://github.com/clouddrove/terraform-aws-cloudwatch-alarms.git?ref=0.14"
 
   name        = "alarm"
-  application = "clouddrove"
+  repository  = "https://github.com/clouddrove/terraform-aws-cloudwatch-alarms.git"
   environment = "test"
-  label_order = ["environment", "application", "name"]
+  label_order = ["name", "environment"]
 
   alarm_name          = "website-alarm"
   comparison_operator = "GreaterThanThreshold"

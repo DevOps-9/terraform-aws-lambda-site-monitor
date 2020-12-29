@@ -6,10 +6,16 @@ variable "name" {
   description = "Lambda Name  (e.g. `app` or `cluster`)."
 }
 
-variable "application" {
+variable "repository" {
   type        = string
   default     = ""
-  description = "Lambda Application (e.g. `cd` or `clouddrove`)."
+  description = "Terraform current module repo"
+
+  validation {
+    # regex(...) fails if it cannot find a match
+    condition     = can(regex("^https://", var.repository))
+    error_message = "The module-repo value must be a valid Git repo link."
+  }
 }
 
 variable "environment" {
@@ -62,8 +68,8 @@ variable "slack_variables" {
 
 variable "managedby" {
   type        = string
-  default     = "anmol@clouddrove.com"
-  description = "ManagedBy, eg 'CloudDrove' or 'AnmolNagpal'."
+  default     = "hello@clouddrove.com"
+  description = "ManagedBy, eg 'CloudDrove'."
 }
 
 variable "schedule_expression" {
@@ -82,12 +88,14 @@ variable "subnet_ids" {
   type        = list
   default     = []
   description = "Subnet IDs."
+  sensitive   = true
 }
 
 variable "security_group_ids" {
   type        = list
   default     = []
   description = "Security Group IDs."
+  sensitive   = true
 }
 
 variable "timeout" {
